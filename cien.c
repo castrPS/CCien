@@ -283,7 +283,7 @@ void opFrac(){
 			goto loop;
 		break;
 	}
-	if(op!='s')
+	if(op!='s'){
 		a=simple(a);
 		b=simple(b);
 		c=simple(c);
@@ -293,6 +293,7 @@ void opFrac(){
 		printf(" = ");
 		outFraction(c);
 		printf("\n");
+	}
 }
 int main(){
 	char tipo;
