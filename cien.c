@@ -295,6 +295,87 @@ void opFrac(){
 		printf("\n");
 	}
 }
+
+double** matriz(int lin,int col){ 
+
+  int i,j;
+
+  double **mat = (double**)malloc(lin * sizeof(double*)); 
+
+  for (i = 0; i < lin; i++){ 
+       mat[i] = (double*) malloc(col * sizeof(double)); 
+       for (j = 0; j < col; j++){ 
+            scanf("%lf",mat[i][j]);
+       }
+  }
+return mat;
+}
+
+void opMat(){
+	int i,j; //primeira matriz
+	int k,l; //segunda matriz
+	int m,n; //terceira matriz
+	char op;
+	double **b;
+	printf("Primeira matriz\n");
+	printf("Numero de Linhas:");
+	scanf("%d",&i);
+	printf("Numero de Colunas:");
+	scanf("%d",&j);
+	double **a=matriz(i,j);
+	if(op!='^'){
+	printf("Segunda matriz\n");
+	printf("Numero de Linhas:");
+	scanf("%d",&k);
+	printf("Numero de Colunas:");
+	scanf("%d",&l);
+	b=matriz(k,l);
+ 	}
+	double **c = (double**)malloc(i * sizeof(double*)); 	
+	loop:
+	switch (op){
+		case '+':
+		if (i!=k||j!=l){
+			printf("Matrizes de tamanhos diferentes");
+		}
+		else{
+  		for (m = 0; m < i; m++){ 
+       		c[m] = (double*) malloc(j * sizeof(double)); 
+       		for (n = 0; n < j; n++){ 
+            c[m][n]=a[m][n]+b[m][n];
+       	}
+  		}
+		}
+		break;
+		case '-':
+		if (i!=k||j!=l){
+			printf("Matrizes de tamanhos diferentes");
+		}
+		else{
+  		for (m = 0; m < i; m++){ 
+       		c[m] = (double*) malloc(j * sizeof(double)); 
+       		for (n = 0; n < j; n++){ 
+            c[m][n]=a[m][n]-b[m][n];
+       	}
+  		}
+		}
+		break;
+		case '*':
+		break;
+		case '/':
+		break;
+		case '^':
+		break;
+		default:
+		printf("Operacao invalida. Digite umsa valida como +,-,*,/,^, ou s para sair.\n");
+		scanf("\n%c",&op);
+		if (op!='s')
+			goto loop;
+		break;
+	}
+	if(op!='s')
+		printf("%d %c %d = %d\n", a, op, b, c);	
+}
 int main(){
 	char tipo;
 	loop:
@@ -314,6 +395,7 @@ int main(){
 			opComplex();
 			break;
 		case 'm':
+			opMat();
 			break;
 		case 's':
 			return 0;
