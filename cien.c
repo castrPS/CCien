@@ -296,25 +296,32 @@ void opFrac(){
 	}
 }
 
-double** matriz(int lin,int col){ 
-
-  int i,j;
-
-  double **mat = (double**)malloc(lin * sizeof(double*)); 
-
-  for (i = 0; i < lin; i++){ 
-       mat[i] = (double*) malloc(col * sizeof(double)); 
-       for (j = 0; j < col; j++){ 
-            scanf("%lf",mat[i][j]);
-       }
-  }
-return mat;
+double** matriz(int x, int y) { 
+	int i,j;
+    // Criando o ponteiro de ponteiros para armazenar os valores
+    double **temp = (double **) malloc(x * sizeof(double *));
+    for(i = 0; i  < x; i++){
+        temp[i] = (double *) malloc(y * sizeof(double)); 
+        for (j=0; j<y; j++){
+        	scanf("%lf", &temp[i][j]);
+        }
+    }
+  	return temp;
 }
-
+void outMat(double **mat, int i, int j){
+	int x;
+	int y;
+	for (x=0; x<i;x++){
+		for (y=0; y<j;y++){
+			printf(".2%lf ", mat[x][y]);
+		}
+		printf("\n");
+	}
+}
 void opMat(){
 	int i,j; //primeira matriz
 	int k,l; //segunda matriz
-	int m,n; //terceira matriz
+	int m,n,p; //terceira matriz
 	char op;
 	double **b;
 	printf("Primeira matriz\n");
@@ -323,6 +330,8 @@ void opMat(){
 	printf("Numero de Colunas:");
 	scanf("%d",&j);
 	double **a=matriz(i,j);
+	printf("Digite o operador:");
+	scanf("\n%c",&op);
 	if(op!='^'){
 	printf("Segunda matriz\n");
 	printf("Numero de Linhas:");
@@ -361,10 +370,49 @@ void opMat(){
 		}
 		break;
 		case '*':
-		break;
-		case '/':
+		if(j!=k)
+			printf("Multiplicacao nao possivel");
+		else{
+			for (m=0; m<i;m++){
+				c[m] = (double*) malloc(j * sizeof(double)); 
+				for(n=0;n<l;n++){
+					c[m][n]=0;
+					for(p=0;p<j;p++){
+						c[m][n]+=a[p][n]*b[m][p]; //multiplicaçao linha por coluna
+					}
+				}
+			}
+		}
 		break;
 		case '^':
+			if(i!=j)
+				printf("Matriz nao quadrada");
+				op='s';
+			else{
+				for (m=0; m<i;m++){
+				c[m] = (double*) malloc(j * sizeof(double)); 
+				for(n=0;n<l;n++){
+					c[m][n]=0;
+					if(i==j)
+						c[m][n]=1;
+					else
+						c[m][n]=0;
+					}
+				}
+			printf("Digite o numero inteiro positivo:");
+			scanf("%d",k);
+			//repetição de várias multiplicações
+			for (l=0;l<=k;l++){
+			for (m=0; m<i;m++){
+				for(n=0;n<l;n++){
+					c[m] = (double*) malloc(j * sizeof(double)); 
+					for(p=0;p<j;p++){
+						c[m][n]+=a[p][n]*c[m][p];
+					}
+				}
+			}
+			}
+		}
 		break;
 		default:
 		printf("Operacao invalida. Digite umsa valida como +,-,*,/,^, ou s para sair.\n");
@@ -374,7 +422,15 @@ void opMat(){
 		break;
 	}
 	if(op!='s')
-		printf("%d %c %d = %d\n", a, op, b, c);	
+		outMat(a,i,j);
+		printf("%c\n\n",op);
+		if (op=='^')
+			printf("%d\n\n", k);
+		else{
+			outMat(b,k,l);
+		}
+		printf("=\n\n");
+		outMat(c,m,n);
 }
 int main(){
 	char tipo;
